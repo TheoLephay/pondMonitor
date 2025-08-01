@@ -66,7 +66,7 @@ esp_timer_create_args_t heartBeatTimerData = {
 
 static portMUX_TYPE tempSpinlock = portMUX_INITIALIZER_UNLOCKED;
 
-void IRAM_ATTR inputGpioCb(void *arg) 
+void IRAM_ATTR inputGpioCb(void *arg)
 {
     WaterFloat_t itrFloat = *(WaterFloat_t *)arg;
     BaseType_t HigherPriorityTaskWoken = pdFALSE;
@@ -94,30 +94,30 @@ void heartBeatCB(void *arg)
     hb = !hb;
 }
 
-void TempMeasureCb(void *args) 
+void TempMeasureCb(void *args)
 {
     xTaskNotify(boardTaskHandle, TEMP_MEAS_REQ_MSK, eSetBits);
 }
 
-void TempMeasure(void) 
+void TempMeasure(void)
 {
     unsigned int trials = TEMP_SENSOR_TRIALS;
     float t;
-    do 
+    do
     {
         if (trials < TEMP_SENSOR_TRIALS) vTaskDelay(2000);
         taskENTER_CRITICAL(&tempSpinlock);
         t = dht22.getTemperature();
         taskEXIT_CRITICAL(&tempSpinlock);
-    } 
+    }
     while ((dht22.getLastError() != dht22.OK) && (--trials > 0u));
 
 
-    if (dht22.getLastError() != dht22.OK) 
+    if (dht22.getLastError() != dht22.OK)
     {
         Serial.printf("dht error %u\n", dht22.getLastError());
         displayError("ERR Comm temp sensor");
-    } 
+    }
     else
     {
         DataMgr_pushTemp(t);
@@ -190,13 +190,13 @@ void boardTask(void *arg)
     {
         BaseType_t notifReceived = xTaskNotifyWait(0x0u, 0xFFFFFFFFu, &notificationFlags, pdMS_TO_TICKS(500));
 
-        if ((notificationFlags & PUMP_ITR_MSK) != 0u) 
+        if ((notificationFlags & PUMP_ITR_MSK) != 0u)
         {
             // TODO if too close, maybe skip...
             // OTOD 2: ajouter compteur de temps
         }
 
-        if ((notificationFlags & FLOAT1_ITR_MSK) != 0u) 
+        if ((notificationFlags & FLOAT1_ITR_MSK) != 0u)
         {
             pinValue = Board_digitalReadDebounced(FLOAT1_PIN);
             if (pinValue)
@@ -210,7 +210,7 @@ void boardTask(void *arg)
             }
         }
 
-        if ((notificationFlags & FLOAT2_ITR_MSK) != 0u) 
+        if ((notificationFlags & FLOAT2_ITR_MSK) != 0u)
         {
             pinValue = Board_digitalReadDebounced(FLOAT2_PIN);
             if (pinValue)
@@ -233,39 +233,39 @@ void boardTask(void *arg)
             }
         }
 
-        if ((notificationFlags & R3_CLOSE_MSK) != 0u) 
+        if ((notificationFlags & R3_CLOSE_MSK) != 0u)
         {
             digitalWrite(RELAY3_PIN, 1);
             r3State = true;
         }
-        if ((notificationFlags & R3_OPEN_MSK) != 0u) 
+        if ((notificationFlags & R3_OPEN_MSK) != 0u)
         {
             digitalWrite(RELAY3_PIN, 0);
             r3State = false;
         }
-        if ((notificationFlags & R4_CLOSE_MSK) != 0u) 
+        if ((notificationFlags & R4_CLOSE_MSK) != 0u)
         {
             digitalWrite(RELAY4_PIN, 1);
         }
-        if ((notificationFlags & R5_OPEN_MSK) != 0u) 
+        if ((notificationFlags & R5_OPEN_MSK) != 0u)
         {
             digitalWrite(RELAY4_PIN, 0);
         }
-        if ((notificationFlags & R5_CLOSE_MSK) != 0u) 
+        if ((notificationFlags & R5_CLOSE_MSK) != 0u)
         {
             digitalWrite(RELAY5_PIN, 1);
         }
-        if ((notificationFlags & R5_OPEN_MSK) != 0u) 
+        if ((notificationFlags & R5_OPEN_MSK) != 0u)
         {
             digitalWrite(RELAY5_PIN, 0);
         }
 
-        if ((notificationFlags & TEMP_MEAS_REQ_MSK) != 0u) 
+        if ((notificationFlags & TEMP_MEAS_REQ_MSK) != 0u)
         {
             TempMeasure();
         }
 
-        if ((notificationFlags & DRUM_START_MSK) != 0u) 
+        if ((notificationFlags & DRUM_START_MSK) != 0u)
         {
             Board_startDrum();
         }

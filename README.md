@@ -6,14 +6,14 @@ The pond's filter is a gravity filter, which means that the pump is inside the f
 ## Hardware
 
 - ESP 32S module board as MCU
-- Inputs 
+- Inputs
     - 3 terminal blocks to connect water floats (or any switch).
         - One terminal is not connected to the MCU but goes through a RS latch. It's meant to be used as a security to avoid the main pump to run without water, which can happen if the filter is clogged or the pond water level too low or the pump throughput is too high. So if the MCU goes crazy/shuts down for some reason (first time using EPS32 for a serious project), the latch is still able to stop the pump.
 
     - One terminal block for power supply (12V)
     - One terminal block for sensors (1 data wire sensors)
 
-- Outputs: 
+- Outputs:
     - 5 terminal blocks to drive 12V relays.
         - One is reserved to control the main pump, from the latched signal.
         - The other 4 are controlled by the MCU

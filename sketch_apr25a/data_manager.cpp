@@ -37,7 +37,7 @@ void DataMgr_pushTemp(float t)
     DataMgr_shiftAll();
 
     hourlyTempsY[0] = t;
-    
+
     if(DataMgr_notifyNewTemp != NULL)
     {
         DataMgr_notifyNewTemp();

@@ -128,7 +128,7 @@ void ClrErrorButtonCb(int value)
 }
 
 void UI_setup(void)
-{   
+{
     server.begin();
 
     for(uint8_t i = 0; i < HOURLY_TEMP_ARRAY_SZ; i++)
