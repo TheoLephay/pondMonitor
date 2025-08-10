@@ -1,3 +1,5 @@
+/// Copyright (c) 2025 Theo Lephay - All Right Reserved
+
 #include "esp_timer.h"
 #include <stdint.h>
 #include "data_manager.h"

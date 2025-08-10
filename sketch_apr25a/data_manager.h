@@ -1,3 +1,5 @@
+/// Copyright (c) 2025 Theo Lephay - All Right Reserved
+
 #ifndef DATA_MANAGER_H
 #define DATA_MANAGER_H
 

@@ -1,3 +1,5 @@
+/// Copyright (c) 2025 Theo Lephay - All Right Reserved
+
 #ifndef _UI_H_
 #define _UI_H_
 

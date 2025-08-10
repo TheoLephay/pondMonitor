@@ -1,3 +1,5 @@
+/// Copyright (c) 2025 Theo Lephay - All Right Reserved
+
 #ifndef _BOARD_HAL_H_
 #define _BOARD_HAL_H_
 

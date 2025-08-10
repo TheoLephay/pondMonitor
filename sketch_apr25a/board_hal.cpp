@@ -1,3 +1,5 @@
+/// Copyright (c) 2025 Theo Lephay - All Right Reserved
+
 #include <Arduino.h>
 #include "esp32-hal.h"
 #include "esp32-hal-gpio.h"

@@ -1,5 +1,6 @@
-#include <Arduino.h>
+/// Copyright (c) 2025 Theo Lephay - All Right Reserved
 
+#include <Arduino.h>
 #include <WiFi.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
