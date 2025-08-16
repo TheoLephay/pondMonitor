@@ -1,17 +1,20 @@
 /// Copyright (c) 2025 Theo Lephay - All Right Reserved
 
+#include "freertos/projdefs.h"
 #include <Arduino.h>
 #include "esp32-hal.h"
 #include "esp32-hal-gpio.h"
-#include "DHT22.h"
 #include <board_hal.h>
 #include "esp_timer.h"
 #include "data_manager.h"
 #include "ui.hpp"
 
+extern "C" {
+    #include "DS18B20.h"
+}
+
 
 #define HB_LED     2u
-#define TEMP_SENSOR_PIN 16u
 #define DEBOUNCER_POLLS 31u
 
 #define TEMP_SENSOR_TRIALS 2u
@@ -44,7 +47,6 @@ WaterFloat_t pump = {.pin = PUMP_PIN, .counter = 0};
 WaterFloat_t float1 = {.pin = FLOAT1_PIN, .counter = 0};
 WaterFloat_t float2 = {.pin = FLOAT2_PIN, .counter = 0};
 
-DHT22 dht22(TEMP_SENSOR_PIN);
 
 bool tempMeasReq = false;
 uint64_t drumStartTime = 0;
@@ -66,7 +68,6 @@ esp_timer_create_args_t heartBeatTimerData = {
   .skip_unhandled_events = true,
 };
 
-static portMUX_TYPE tempSpinlock = portMUX_INITIALIZER_UNLOCKED;
 
 void IRAM_ATTR inputGpioCb(void *arg)
 {
@@ -104,20 +105,26 @@ void TempMeasureCb(void *args)
 void TempMeasure(void)
 {
     unsigned int trials = TEMP_SENSOR_TRIALS;
+    bool error = false;
     float t;
     do
     {
-        if (trials < TEMP_SENSOR_TRIALS) vTaskDelay(2000);
-        taskENTER_CRITICAL(&tempSpinlock);
-        t = dht22.getTemperature();
-        taskEXIT_CRITICAL(&tempSpinlock);
+        if (trials < TEMP_SENSOR_TRIALS) vTaskDelay(pdMS_TO_TICKS(2000));
+        error = !DS_StartConversionUniqueSensor();
+        vTaskDelay(pdMS_TO_TICKS(CONVERSION_TIME));
+        if (!error)
+        {
+            t = DS_GetTempUniqueSensor();
+        }
+        else {
+            Serial.println("error temp");
+        }
     }
-    while ((dht22.getLastError() != dht22.OK) && (--trials > 0u));
+    while (error && (--trials > 0u));
 
 
-    if (dht22.getLastError() != dht22.OK)
+    if (error)
     {
-        Serial.printf("dht error %u\n", dht22.getLastError());
         displayError("ERR Comm temp sensor");
     }
     else
@@ -160,6 +167,7 @@ static void Board_checkStopDrum(void)
 
 void Board_setup(void)
 {
+    DS_Setup();
     esp_timer_create(&tempTimerData, &tempTimerHandle);
     esp_timer_start_periodic(tempTimerHandle, 60 * 30 * 1000000);
 
@@ -167,7 +175,6 @@ void Board_setup(void)
     esp_timer_start_periodic(heartBeatTimerHandle, 1000000);
     pinMode(HB_LED, OUTPUT);
     digitalWrite(HB_LED, 1);
-
 
     pinMode(pump.pin,   INPUT_PULLUP);
     pinMode(float1.pin, INPUT);
