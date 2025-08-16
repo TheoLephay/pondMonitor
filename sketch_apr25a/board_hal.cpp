@@ -201,8 +201,15 @@ void boardTask(void *arg)
 
         if ((notificationFlags & PUMP_ITR_MSK) != 0u)
         {
-            // TODO if too close, maybe skip...
-            // OTOD 2: ajouter compteur de temps
+            pinValue = Board_digitalReadDebounced(PUMP_PIN);
+            if (pinValue)
+            {
+                xTaskNotify(UiTaskHandle, PUMP_INFO_CLOSED_MSK, eSetBits);
+            }
+            else
+            {
+                xTaskNotify(UiTaskHandle, PUMP_INFO_OPEN_MSK, eSetBits);
+            }
         }
 
         if ((notificationFlags & FLOAT1_ITR_MSK) != 0u)

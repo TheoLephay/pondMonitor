@@ -18,6 +18,8 @@
 #define R5_BUTTON_ON_IDX       14u
 #define R5_BUTTON_OFF_IDX      15u
 #define CLR_ERROR_IDX          16u
+#define PUMP_INFO_CLOSED_IDX   17u
+#define PUMP_INFO_OPEN_IDX     18u
 
 #define R2_BUTTON_ON_MSK       (1u << R2_BUTTON_ON_IDX)
 #define R2_BUTTON_OFF_MSK      (1u << R2_BUTTON_OFF_IDX)
@@ -32,6 +34,8 @@
 #define R5_BUTTON_ON_MSK       (1u << R5_BUTTON_ON_IDX)
 #define R5_BUTTON_OFF_MSK      (1u << R5_BUTTON_OFF_IDX)
 #define CLR_ERROR_MSK          (1u << CLR_ERROR_IDX)
+#define PUMP_INFO_CLOSED_MSK (1u << PUMP_INFO_CLOSED_IDX)
+#define PUMP_INFO_OPEN_MSK   (1u << PUMP_INFO_OPEN_IDX)
 
 void UI_setup(void);
 

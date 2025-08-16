@@ -220,6 +220,15 @@ void UiTask(void *arg)
             float2Info.update("Open", DASH_STATUS_SUCCESS);
         }
 
+        if ((notificationFlags & PUMP_INFO_CLOSED_MSK) != 0u)
+        {
+            pumpInfo.update("Stopped", DASH_STATUS_DANGER);
+        }
+        if ((notificationFlags & PUMP_INFO_OPEN_MSK) != 0u)
+        {
+            pumpInfo.update("Working", DASH_STATUS_SUCCESS);
+        }
+
         dashboard.sendUpdates();
     }
 }
