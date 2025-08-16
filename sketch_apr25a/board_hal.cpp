@@ -32,7 +32,8 @@ extern "C" {
 
 TaskHandle_t boardTaskHandle;
 
-bool r3State = false;
+// state of relay 3 in order to make a two input switch
+bool r3State = true;
 
 void heartBeatCB(void *arg);
 void TempMeasureCb(void *args);
@@ -169,7 +170,7 @@ void Board_setup(void)
 {
     DS_Setup();
     esp_timer_create(&tempTimerData, &tempTimerHandle);
-    esp_timer_start_periodic(tempTimerHandle, 60 * 30 * 1000000);
+    esp_timer_start_periodic(tempTimerHandle, 30 * 60 * 1000000);
 
     esp_timer_create(&heartBeatTimerData, &heartBeatTimerHandle);
     esp_timer_start_periodic(heartBeatTimerHandle, 1000000);
@@ -237,6 +238,8 @@ void boardTask(void *arg)
             {
                 xTaskNotify(UiTaskHandle, FLOAT2_INFO_OPEN_MSK, eSetBits);
             }
+
+            // Whatever the pin value, toggle light switch on interrupt.
             if (!r3State)
             {
                 xTaskNotify(boardTaskHandle, R3_CLOSE_MSK, eSetBits);
@@ -259,14 +262,16 @@ void boardTask(void *arg)
             digitalWrite(RELAY3_PIN, 0);
             r3State = false;
         }
+
         if ((notificationFlags & R4_CLOSE_MSK) != 0u)
         {
             digitalWrite(RELAY4_PIN, 1);
         }
-        if ((notificationFlags & R5_OPEN_MSK) != 0u)
+        if ((notificationFlags & R4_OPEN_MSK) != 0u)
         {
             digitalWrite(RELAY4_PIN, 0);
         }
+
         if ((notificationFlags & R5_CLOSE_MSK) != 0u)
         {
             digitalWrite(RELAY5_PIN, 1);

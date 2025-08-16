@@ -178,7 +178,7 @@ void UiTask(void *arg)
             }
             else
             {
-                softwareInfo.update("Unknown error", DASH_STATUS_DANGER);
+                softwareInfo.update("Error", DASH_STATUS_DANGER);
             }
         }
         if((notificationFlags & CLR_ERROR_MSK) != 0u)
@@ -190,14 +190,17 @@ void UiTask(void *arg)
         {
             R2Button.update((notificationFlags & R2_BUTTON_ON_MSK) != 0u);
         }
+
         if ((notificationFlags & (R3_BUTTON_ON_MSK | R3_BUTTON_OFF_MSK)) != 0u)
         {
             R3Button.update((notificationFlags & R3_BUTTON_ON_MSK) != 0u);
         }
+
         if ((notificationFlags & (R4_BUTTON_ON_MSK | R4_BUTTON_OFF_MSK)) != 0u)
         {
             R4Button.update((notificationFlags & R4_BUTTON_ON_MSK) != 0u);
         }
+
         if ((notificationFlags & (R5_BUTTON_ON_MSK | R5_BUTTON_OFF_MSK)) != 0u)
         {
             R5Button.update((notificationFlags & R5_BUTTON_ON_MSK) != 0u);
@@ -211,6 +214,7 @@ void UiTask(void *arg)
         {
             float1Info.update("Open", DASH_STATUS_SUCCESS);
         }
+
         if ((notificationFlags & FLOAT2_INFO_CLOSED_MSK) != 0u)
         {
             float2Info.update("Closed", DASH_STATUS_DANGER);

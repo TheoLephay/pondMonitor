@@ -61,10 +61,9 @@ void setup() {
     Board_setup();
 
     // once both tasks have been set up, request a first temp measurement and init float statuses
-    xTaskNotify(boardTaskHandle, TEMP_MEAS_REQ_MSK | PUMP_ITR_MSK | FLOAT1_ITR_MSK, eSetBits);
+    xTaskNotify(boardTaskHandle, TEMP_MEAS_REQ_MSK | PUMP_ITR_MSK | FLOAT1_ITR_MSK | FLOAT2_ITR_MSK, eSetBits);
 }
 
 void loop() {
-    vTaskDelay(2000);
 }
 
