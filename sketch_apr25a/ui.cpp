@@ -139,6 +139,7 @@ void ClrErrorButtonCb(int value)
 void UI_setup(void)
 {
     server.begin();
+    dashboard.setAuthentication(web_id, web_password);
 
     for(uint8_t i = 0; i < HOURLY_TEMP_ARRAY_SZ; i++)
     {
