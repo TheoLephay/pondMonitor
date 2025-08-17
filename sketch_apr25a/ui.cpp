@@ -34,7 +34,8 @@ Card float2Info(&dashboard, STATUS_CARD, "switch status", DASH_STATUS_SUCCESS);
 Chart hourlyTempChart(&dashboard, BAR_CHART, "hourly temperatures");
 
 Card softwareInfo(&dashboard, STATUS_CARD, "software status", DASH_STATUS_IDLE);
-Card uptimeInfo(&dashboard, STATUS_CARD, "Uptime", DASH_STATUS_SUCCESS);
+
+Statistic upTimeStatistic(&dashboard, "uptime", "0d0h0s");
 
 void updateUptime(void* pData);
 esp_timer_handle_t uptimeTimerHandle = { 0 };
@@ -49,8 +50,14 @@ TaskHandle_t UiTaskHandle;
 
 void updateUptime(void* pData)
 {
+    static char buff[15u];
     String uptime = DataMgr_getUptimeStr();
-    uptimeInfo.update(uptime);
+
+    for (uint8_t i = 0; i < uptime.length() + 1; i++) {
+        buff[i] = uptime.c_str()[i];
+    }
+    
+    upTimeStatistic.set((const char*) buff);
 }
 
 void updateTempCb(void)
