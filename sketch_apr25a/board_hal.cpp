@@ -170,10 +170,10 @@ void Board_setup(void)
 {
     DS_Setup();
     esp_timer_create(&tempTimerData, &tempTimerHandle);
-    esp_timer_start_periodic(tempTimerHandle, 30 * 60 * 1000000);
+    esp_timer_start_periodic(tempTimerHandle, TEMP_TIMER_PERIOD_US);
 
     esp_timer_create(&heartBeatTimerData, &heartBeatTimerHandle);
-    esp_timer_start_periodic(heartBeatTimerHandle, 1000000);
+    esp_timer_start_periodic(heartBeatTimerHandle, HB_TIMER_PERIOD_US);
     pinMode(HB_LED, OUTPUT);
     digitalWrite(HB_LED, 1);
 

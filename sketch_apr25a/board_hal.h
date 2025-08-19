@@ -18,6 +18,8 @@
 #define R5_CLOSE_MSK (1u << 9u)
 #define R5_OPEN_MSK (1u << 10u)
 
+#define TEMP_TIMER_PERIOD_US (1000000ull * 60ull * 60ull)
+#define HB_TIMER_PERIOD_US   (1000000ull)
 
 void Board_setup(void);
 

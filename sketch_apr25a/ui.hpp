@@ -37,6 +37,8 @@
 #define PUMP_INFO_CLOSED_MSK (1u << PUMP_INFO_CLOSED_IDX)
 #define PUMP_INFO_OPEN_MSK   (1u << PUMP_INFO_OPEN_IDX)
 
+#define UPTIME_TIMER_PERIOD_US 1000000ull
+
 void UI_setup(void);
 
 void UiTask(void *arg);

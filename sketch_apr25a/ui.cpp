@@ -42,7 +42,7 @@ esp_timer_handle_t uptimeTimerHandle = { 0 };
 esp_timer_create_args_t uptimeTimerData = {
   .callback = updateUptime,
   .arg = NULL,
-  .name = "uptimeTimerData",
+  .name = "uptimeTimer",
   .skip_unhandled_events = true,
 };
 
@@ -56,7 +56,7 @@ void updateUptime(void* pData)
     for (uint8_t i = 0; i < uptime.length() + 1; i++) {
         buff[i] = uptime.c_str()[i];
     }
-    
+
     upTimeStatistic.set((const char*) buff);
 }
 
@@ -136,6 +136,7 @@ void ClrErrorButtonCb(int value)
     xTaskNotify(UiTaskHandle, CLR_ERROR_MSK, eSetBits);
 }
 
+
 void UI_setup(void)
 {
     server.begin();
@@ -157,7 +158,7 @@ void UI_setup(void)
     ClrButton.attachCallback(ClrErrorButtonCb);
 
     esp_timer_create(&uptimeTimerData, &uptimeTimerHandle);
-    esp_timer_start_periodic(uptimeTimerHandle, 10 * 1000000);
+    esp_timer_start_periodic(uptimeTimerHandle, UPTIME_TIMER_PERIOD_US);
     updateUptime(NULL);
 
     softwareInfo.update("UI initialized", DASH_STATUS_SUCCESS);

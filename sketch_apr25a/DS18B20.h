@@ -6,7 +6,7 @@
 #include "stdbool.h"
 #include "stdint.h"
 
-// All values below come from the datasheet and are un microseconds if not specified
+// All values below come from the datasheet and are in microseconds if not specified
 #define TEMP_PIN 16u
 
 // min 480us
