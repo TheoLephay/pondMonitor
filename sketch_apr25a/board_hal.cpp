@@ -8,6 +8,7 @@
 #include "esp_timer.h"
 #include "data_manager.h"
 #include "ui.hpp"
+#include "data_manager.h"
 
 extern "C" {
     #include "DS18B20.h"
@@ -15,11 +16,6 @@ extern "C" {
 
 
 #define HB_LED     2u
-#define DEBOUNCER_POLLS 31u
-
-#define TEMP_SENSOR_TRIALS 2u
-#define TEMP_SENSOR_PERIOD_US 60UUL * 60UUL * 1000000ULL
-#define DRUM_DURATION_MS 5000u
 
 #define RELAY2_PIN  23
 #define RELAY3_PIN  22
@@ -149,6 +145,7 @@ static void Board_startDrum(void)
     if (drumRunning) return;
 
     drumRunning = true;
+    DataMgr_NotifyDrum();
     drumStartTime = millis();
     digitalWrite(RELAY2_PIN, 1);
 }

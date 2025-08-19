@@ -8,12 +8,10 @@
 #include <ESPDash.h>
 #include "board_hal.h"
 #include "WString.h"
-
-#define UPDATE_TEMP_MSK (1u << 0u)
-#define DISPLAY_ERROR_MSK (1u << 1u)
+#include "credentials.h"
 
 
-int hourlyTempsX[HOURLY_TEMP_ARRAY_SZ] = { 0 };
+int chartAxisX[MAX(HOURLY_TEMP_ARRAY_SZ, DAYS_PER_MONTH)] = { 0 };
 const char *statusString = NULL;
 
 AsyncWebServer server(80);
@@ -32,6 +30,8 @@ Card float1Info(&dashboard, STATUS_CARD, "Float 1 status", DASH_STATUS_SUCCESS);
 Card float2Info(&dashboard, STATUS_CARD, "switch status", DASH_STATUS_SUCCESS);
 
 Chart hourlyTempChart(&dashboard, BAR_CHART, "hourly temperatures");
+
+Chart dailyDrumChart(&dashboard, BAR_CHART, "daily drum activations");
 
 Card softwareInfo(&dashboard, STATUS_CARD, "software status", DASH_STATUS_IDLE);
 
@@ -60,9 +60,10 @@ void updateUptime(void* pData)
     upTimeStatistic.set((const char*) buff);
 }
 
-void updateTempCb(void)
+void updateDrum(void)
 {
-    xTaskNotify(UiTaskHandle, UPDATE_TEMP_MSK, eSetValueWithOverwrite);
+    int *dataY = DataMgr_GetDrumActToDisplay();
+    dailyDrumChart.updateY(dataY, DAYS_PER_MONTH);
 }
 
 void updateTemp(void)
@@ -142,14 +143,18 @@ void UI_setup(void)
     server.begin();
     dashboard.setAuthentication(web_id, web_password);
 
-    for(uint8_t i = 0; i < HOURLY_TEMP_ARRAY_SZ; i++)
+    for(uint16_t i = 0; i < ARRAY_SZ(chartAxisX); i++)
     {
-        hourlyTempsX[i] = -i;
+        chartAxisX[i] = -i;
     }
-    hourlyTempChart.updateX(hourlyTempsX, HOURLY_TEMP_ARRAY_SZ);
+    hourlyTempChart.updateX(chartAxisX, HOURLY_TEMP_ARRAY_SZ);
+    dailyDrumChart.updateX(chartAxisX, DAYS_PER_MONTH);
+
     float *hourlyTempsY = DataMgr_getTempsToDisplay(HOURLY_TEMP_ARRAY_SZ);
     hourlyTempChart.updateY(hourlyTempsY, HOURLY_TEMP_ARRAY_SZ);
-    DataMgr_registerTempNotifCb(updateTempCb);
+
+    int *dataY = DataMgr_GetDrumActToDisplay();
+    dailyDrumChart.updateY(dataY, DAYS_PER_MONTH);
 
     R2Button.attachCallback(R2ButtonCb);
     R3Button.attachCallback(R3ButtonCb);
@@ -177,6 +182,11 @@ void UiTask(void *arg)
         if ((notificationFlags & UPDATE_TEMP_MSK) != 0u)
         {
             updateTemp();
+        }
+
+        if ((notificationFlags & UPDATE_DRUM_MSK) != 0u)
+        {
+            updateDrum();
         }
 
         if ((notificationFlags & DISPLAY_ERROR_MSK) != 0u)

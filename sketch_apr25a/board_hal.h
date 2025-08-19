@@ -21,6 +21,11 @@
 #define TEMP_TIMER_PERIOD_US (1000000ull * 60ull * 60ull)
 #define HB_TIMER_PERIOD_US   (1000000ull)
 
+#define DEBOUNCER_POLLS 31u
+
+#define TEMP_SENSOR_TRIALS 2u
+#define DRUM_DURATION_MS 15000u
+
 void Board_setup(void);
 
 void boardTask(void *arg);

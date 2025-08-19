@@ -5,6 +5,8 @@
 
 #include <Arduino.h>
 
+#define UPDATE_TEMP_IDX        0u
+#define DISPLAY_ERROR_IDX      1u
 #define R2_BUTTON_ON_IDX       2u
 #define R2_BUTTON_OFF_IDX      3u
 #define FLOAT1_INFO_CLOSED_IDX 4u
@@ -20,7 +22,10 @@
 #define CLR_ERROR_IDX          16u
 #define PUMP_INFO_CLOSED_IDX   17u
 #define PUMP_INFO_OPEN_IDX     18u
+#define UPDATE_DRUM_IDX        19u
 
+#define UPDATE_TEMP_MSK        (1u << UPDATE_TEMP_IDX)
+#define DISPLAY_ERROR_MSK      (1u << DISPLAY_ERROR_IDX)
 #define R2_BUTTON_ON_MSK       (1u << R2_BUTTON_ON_IDX)
 #define R2_BUTTON_OFF_MSK      (1u << R2_BUTTON_OFF_IDX)
 #define FLOAT1_INFO_CLOSED_MSK (1u << FLOAT1_INFO_CLOSED_IDX)
@@ -34,8 +39,9 @@
 #define R5_BUTTON_ON_MSK       (1u << R5_BUTTON_ON_IDX)
 #define R5_BUTTON_OFF_MSK      (1u << R5_BUTTON_OFF_IDX)
 #define CLR_ERROR_MSK          (1u << CLR_ERROR_IDX)
-#define PUMP_INFO_CLOSED_MSK (1u << PUMP_INFO_CLOSED_IDX)
-#define PUMP_INFO_OPEN_MSK   (1u << PUMP_INFO_OPEN_IDX)
+#define PUMP_INFO_CLOSED_MSK   (1u << PUMP_INFO_CLOSED_IDX)
+#define PUMP_INFO_OPEN_MSK     (1u << PUMP_INFO_OPEN_IDX)
+#define UPDATE_DRUM_MSK        (1u << UPDATE_DRUM_IDX)
 
 #define UPTIME_TIMER_PERIOD_US 1000000ull
 
