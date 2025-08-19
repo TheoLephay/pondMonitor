@@ -9,6 +9,7 @@
 #include <ui.hpp>
 #include <esp_task_wdt.h>
 #include <credentials.h>
+#include "PondServer.h"
 
 
 void setup() {
@@ -59,6 +60,7 @@ void setup() {
 
     UI_setup();
     Board_setup();
+    WebServer_Setup();
 
     // once both tasks have been set up, request a first temp measurement and init float statuses
     xTaskNotify(boardTaskHandle, TEMP_MEAS_REQ_MSK | PUMP_ITR_MSK | FLOAT1_ITR_MSK | FLOAT2_ITR_MSK, eSetBits);

@@ -4,6 +4,9 @@
 #define _UI_H_
 
 #include <Arduino.h>
+#include <ESPAsyncWebServer.h>
+
+extern AsyncWebServer server;
 
 #define R2_BUTTON_ON_IDX       2u
 #define R2_BUTTON_OFF_IDX      3u

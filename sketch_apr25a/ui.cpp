@@ -8,14 +8,19 @@
 #include <ESPDash.h>
 #include "board_hal.h"
 #include "WString.h"
+#include "credentials.h"
+#include "PondServer.h"
+
 
 #define UPDATE_TEMP_MSK (1u << 0u)
 #define DISPLAY_ERROR_MSK (1u << 1u)
 
 
-int hourlyTempsX[HOURLY_TEMP_ARRAY_SZ] = { 0 };
+int hourlyTempsX[HOURS_IN_DAY] = { 0 };
 const char *statusString = NULL;
 
+// unfortunately, the server declaration has to stay here to guarantee constructor
+// call order server -> dashboard :/
 AsyncWebServer server(80);
 ESPDash dashboard(&server);
 

@@ -33,6 +33,7 @@ The pond's filter is a gravity filter, which means that the pump is inside the f
 - Current behaviour of float2 and relay3: plug any SPST toggle switch to the input and some light to the output. You can control light physically or remotely.
 - Other relays are spare and can be controlled by software.
 - All the preconfigured behaviours are for my use-case but are made to be easily extendable and configurable.
+- Endpoint to get temperature and drum data to save persistently elsewhere.
 
 Here is how it looks like:
 
