@@ -10,27 +10,13 @@
 #include <esp_task_wdt.h>
 #include <credentials.h>
 #include "data_manager.h"
+#include "WiFiConnect.h"
 
 
 void setup() {
     Serial.begin(115200);
-    /* Connect WiFi */
-    while (1) {
-        delay(1000);
-        Serial.println("try connecting wifi\n");
-        WiFi.mode(WIFI_STA);
-        WiFi.begin(wifi_ssid, wifi_password);
-        if (WiFi.waitForConnectResult(5000) != WL_CONNECTED) {
-            Serial.printf("WiFi Failed!\n");
-        } else {
-            break;
-        }
-        WiFi.disconnect();
-    }
 
-    Serial.print("IP Address: ");
-    Serial.println(WiFi.localIP());
-
+    smartWifiConnect();
 
     BaseType_t ret = xTaskCreate(
         boardTask,

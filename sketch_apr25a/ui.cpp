@@ -14,6 +14,7 @@
 int chartAxisX[MAX(HOURLY_TEMP_ARRAY_SZ, DAYS_PER_MONTH)] = { 0 };
 const char *statusString = NULL;
 
+// Unfortunately server init has to stay here to be before dashboard
 AsyncWebServer server(80);
 ESPDash dashboard(&server);
 
@@ -140,7 +141,6 @@ void ClrErrorButtonCb(int value)
 
 void UI_setup(void)
 {
-    server.begin();
     dashboard.setAuthentication(web_id, web_password);
 
     for(uint16_t i = 0; i < ARRAY_SZ(chartAxisX); i++)

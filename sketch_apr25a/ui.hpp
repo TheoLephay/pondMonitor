@@ -4,6 +4,7 @@
 #define _UI_H_
 
 #include <Arduino.h>
+#include <ESPAsyncWebServer.h>
 
 #define UPDATE_TEMP_IDX        0u
 #define DISPLAY_ERROR_IDX      1u
@@ -52,5 +53,7 @@ void UiTask(void *arg);
 void displayError(const char str[]);
 
 extern TaskHandle_t UiTaskHandle;
+
+extern AsyncWebServer server;
 
 #endif
